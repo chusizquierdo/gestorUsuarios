@@ -11,7 +11,9 @@ const useFormulario =(inicial)=>{
       [e.target.name]: e.target.value,      
     })
   }
-  console.log(formulario)
-  return [formulario, handleChange]
+  const reset=()=>{
+    setFormulario(inicial)
+  }
+  return [formulario, handleChange, reset]
 }
 export default useFormulario;

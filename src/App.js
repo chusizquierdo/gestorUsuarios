@@ -1,76 +1,84 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import useFormulario from './/hooks/useFormulario';
+import Input from "./components/Input";
+import { useState } from 'react'
+import './App.css'
 
-const styles = {
-  form: {
-    width: '100%',
-    fontSize: '25px'
-  }
-}
+
+
 
 
 function App() {
-  const [formulario, handleChange]=useFormulario({name:''})
-  return (
-    <form>
-      <div className="container">
+  const [usuarios, setUsuarios] = useState([])
+  const [formulario, handleChange, reset] = useFormulario({ name: '', lastname: '', mail: '' })
 
-        <div className="row mt-3">
-          <div className="col-1">
-            <label>Nombre: </label>
-          </div>
-          <div className="col-11">
-            <input
-              type="text"
-              name="name"
-              placeholder="Nombre"
-              value={formulario.name}
-              onChange={handleChange}
-              id="nombre"
-              style={styles.form}
-            /><br />
-          </div>
-        </div>
-        <div className="row mt-3">
-          <div className="col-1">
-            <label>Apellido: </label>
-          </div>
-          <div className="col-11">
-            <input
-              type="text"
-              name="apellido"
-              placeholder="Apellido"             
-              id="apellido"
-              style={styles.form}
-            /><br />
-          </div>
-        </div>
-        <div className="row mt-3">
-          <div className="col-1">
-            <label>Mail: </label>
-          </div>
-          <div className="col-11">
-            <input
-              type="mail"
-              name="mail"
-              placeholder="Mail"              
-              id="mail"
-              style={styles.form} /><br />
-          </div>
-        </div><br />
-        <div className="row">
-          <div className="col-1"></div>
-          <div className="col-11">
-            <input
-              className="btn btn-primary"
-              type="submit"
-              value="Enviar"
-              style={{ width: '100%' }}
-            />
+  const submit = e => {
+    e.preventDefault()
+    setUsuarios([
+      ...usuarios,
+      formulario
+    ])
+    reset()
+  }
+
+
+  console.log("formulario")
+  console.log(formulario)
+  console.log("usuarios")
+  console.log(usuarios)
+  return (
+    <div>
+      <form onSubmit={submit}>
+        <div className="container">
+          <Input     
+            label="Nombre:"
+            value={formulario.name}
+            onChange={handleChange}
+            name="name"
+
+          />
+          <Input
+            label="Apellido:"
+            name="lastname"
+            value={formulario.lastname}
+            onChange={handleChange}
+          />
+          <Input
+            label="Mail:"
+            name="mail"
+            value={formulario.mail}
+            onChange={handleChange}
+          /><br />
+
+          <div className="row">
+            <div className="col-1"></div>
+            <div className="col-11">
+              <input
+                className="btn btn-primary"
+                type="submit"
+                value="Enviar"
+                style={{ width: '100%' }}
+              />
+            </div>
           </div>
         </div>
+      </form><br />      
+        <table>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Mail</th>
+          </tr>
+          {usuarios.map(x =>
+            <tr>
+              <td>{x.name}</td>
+              <td>{x.lastname}</td>
+              <td>{x.mail}</td>
+            </tr>
+            // <li key={x.mail}>{`${x.name} ${x.lastname} ${x.mail}`}</li>
+          )}
+        </table>
       </div>
-    </form>
   );
 }
 
